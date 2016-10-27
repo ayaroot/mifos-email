@@ -11,7 +11,7 @@ module MifosXMessenger
 		@headers = nil
 
 		def initialize(options = {})
-			#OpenSSL::SSL::VERIFY_PEER == OpenSSL::SSL::VERIFY_NONE
+			OpenSSL::SSL::VERIFY_PEER == OpenSSL::SSL::VERIFY_NONE
 			@baseUrl = options['baseUrl'] || 'https://demo.openmf.org/fineract-provider-provider/api/v1'
 			uri = URI.parse(@baseUrl)
 			tenantId = options['tenantId'] || 'default'
@@ -19,14 +19,28 @@ module MifosXMessenger
 			pass = options['pass'] || 'password'
 			@http = Net::HTTP.new(uri.host, uri.port)
 			@http.use_ssl = uri.scheme == 'https'
-			#@http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+			@http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 			@headers = {
 				'Fineract-Platform-TenantId' => tenantId,
 				'Authorization' => 'Basic '+Base64.encode64(user+':'+pass).gsub("\n",'')
 			}
 		end
 
-		
+		def get_entity_uri(entity, entityId, prefUrl = @baseUrl)
+			[prefUrl, entity, entityId.to_s].join('/')
+		end
+
+		def get_entity(path, options = {})
+			path = URI.join(@baseUrl, path).path
+			if fields = options[:fields]
+				path += '?fields='+fields.join(',')
+			end
+			res = @http.request_get(path, @headers)
+			if 'application/json' == res['content-type']
+				return JSON.parse(res.body)
+			end			
+			return nil
+		end
 
 
 
