@@ -26,7 +26,21 @@ module MifosXMessenger
 			}
 		end
 
-		
+		def get_entity_uri(entity, entityId, prefUrl = @baseUrl)
+			[prefUrl, entity, entityId.to_s].join('/')
+		end
+
+		def get_entity(path, options = {})
+			path = URI.join(@baseUrl, path).path
+			if fields = options[:fields]
+				path += '?fields='+fields.join(',')
+			end
+			res = @http.request_get(path, @headers)
+			if 'application/json' == res['content-type']
+				return JSON.parse(res.body)
+			end			
+			return nil
+		end
 
 
 
