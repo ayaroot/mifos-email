@@ -46,6 +46,11 @@ module MifosXMessenger
 
 
 
+		def get_fixed_deposit(fixedDepositId, transId, options = {})
+			#fixed_deposit_uri = get_entity_uri('fixeddepositaccounts/template', fixedDepositId)
+			uri = get_entity_uri('fixeddepositaccounts/template', fixedDepositId)
+			get_entity(uri, options)
+		end
 
 		def get_fixed_deposit_transaction(fixedDepositId, transId, options = {})
 			fixed_deposit_uri = get_entity_uri('fixeddepositaccounts/template', savingsId)
