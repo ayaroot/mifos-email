@@ -41,12 +41,30 @@ module MifosXMessenger
 			end			
 			return nil
 		end
-<<<<<<< HEAD
 
-		
-=======
->>>>>>> 0dfdc5182c02f040a21502fcd206a268e6ece2ee
+		def get_client(clientId, options = {})
+			uri = get_entity_uri('clients', clientId)
+			get_entity(uri, options)
+		end
+		def get_client_email(clientId)
+			uri = get_entity_uri('email', clientId, 'https://localhost/fineract-provider/api/v1/datatables')
+			get_entity(uri)
+		end
+		def get_loan(loanId, options = {})
+			uri = get_entity_uri('loans', loanId)
+			get_entity(uri, options)
+		end
 
+		def get_loan_transaction(loanId, transId, options = {})
+			loan_uri = get_entity_uri('loans', loanId)
+			uri = get_entity_uri('transactions', transId, loan_uri)
+			get_entity(uri, options)
+		end
+
+		def get_savings(savingsId, options = {})
+			uri = get_entity_uri('savingsaccounts', savingsId)
+			get_entity(uri, options)
+		end
 
 		def get_savings_transaction(savingsId, transId, options = {})
 			savings_uri = get_entity_uri('savingsaccounts', savingsId)
