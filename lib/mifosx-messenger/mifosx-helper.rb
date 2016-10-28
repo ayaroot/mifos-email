@@ -41,8 +41,11 @@ module MifosXMessenger
 			end			
 			return nil
 		end
+<<<<<<< HEAD
 
 		
+=======
+>>>>>>> 0dfdc5182c02f040a21502fcd206a268e6ece2ee
 
 
 		def get_savings_transaction(savingsId, transId, options = {})
